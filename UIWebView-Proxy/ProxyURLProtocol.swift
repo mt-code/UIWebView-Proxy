@@ -20,8 +20,6 @@ class ProxyURLProtocol: URLProtocol, URLSessionDataDelegate, URLSessionTaskDeleg
             return false
         }
         
-        print("Proxying request: \(request.url?.absoluteString)")
-        
         return true
     }
     
@@ -49,6 +47,7 @@ class ProxyURLProtocol: URLProtocol, URLSessionDataDelegate, URLSessionTaskDeleg
     }
     
     func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive response: URLResponse, completionHandler: @escaping (URLSession.ResponseDisposition) -> Void) {
+        
         client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
         urlResponse = response
         receivedData = NSMutableData()
@@ -79,20 +78,40 @@ class ProxyURLProtocol: URLProtocol, URLSessionDataDelegate, URLSessionTaskDeleg
         client?.urlProtocolDidFinishLoading(self)
     }
     
-    private func createSession(proxied: Bool) -> URLSession {
+    func urlSession(_ session: URLSession, task: URLSessionTask, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping(URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+        print("Received authentication challenge.")
         
+        let authMethod = challenge.protectionSpace.authenticationMethod
+        guard authMethod == NSURLAuthenticationMethodHTTPBasic else {
+            print("Authentication method isn't basic, it is: \(authMethod)")
+            return
+        }
+        
+        let credential = URLCredential(user: "ankco2n9g1gepzl", password: "MHP9D6C7LhkfH2O", persistence: .forSession)
+        
+        completionHandler(.useCredential, credential)
+    }
+    
+    private func createSession(proxied: Bool) -> URLSession {
         let config = URLSessionConfiguration.ephemeral
         
         if (proxied) {
-            let proxyHost: CFString = "213.32.113.36" as CFString // proxy server
-            let proxyPort: CFNumber = 8080 as CFNumber // your port
+            //let login = "ankco2n9g1gepzl"
+            //let password = "MHP9D6C7LhkfH2O"
+            
+            //let proxyHost: CFString = "213.32.113.36" as CFString // proxy server
+            //let proxyPort: CFNumber = 8080 as CFNumber
+            let proxyHost: CFString = "lon.uk.torguardvpnaccess.com" as CFString
+            let proxyPort: CFNumber = 6060 as CFNumber
             config.connectionProxyDictionary = [
                 kCFNetworkProxiesHTTPEnable: true,
                 kCFNetworkProxiesHTTPProxy: proxyHost,
                 kCFNetworkProxiesHTTPPort: proxyPort,
                 "HTTPSEnable": 1,
                 kCFStreamPropertyHTTPSProxyHost: proxyHost,
-                kCFStreamPropertyHTTPSProxyPort: proxyPort
+                kCFStreamPropertyHTTPSProxyPort: proxyPort,
+                //kCFProxyUsernameKey: "",
+                //kCFProxyPasswordKey: ""
             ]
         }
         
@@ -108,3 +127,4 @@ class ProxyURLProtocol: URLProtocol, URLSessionDataDelegate, URLSessionTaskDeleg
         return session
     }
 }
+
