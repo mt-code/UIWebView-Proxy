@@ -16,6 +16,13 @@ class ProxyURLProtocol: URLProtocol, URLSessionDataDelegate, URLSessionTaskDeleg
     var urlResponse: URLResponse!
     
     override class func canInit(with request: URLRequest) -> Bool {
+        print("Checking if we can init request: \(request.url?.absoluteString)")
+        
+        if URLProtocol.property(forKey: "customkey", in: request) != nil {
+            print("customkey property exists!")
+            return true
+        }
+        
         if URLProtocol.property(forKey: "processing", in: request) != nil {
             return false
         }
@@ -28,6 +35,8 @@ class ProxyURLProtocol: URLProtocol, URLSessionDataDelegate, URLSessionTaskDeleg
     }
     
     override func startLoading() {
+        print("Start loading...")
+        
         let newRequest = self.request as! NSMutableURLRequest
         URLProtocol.setProperty(true, forKey: "processing", in: newRequest) // Tag our request to show it is being processed.
         
@@ -36,17 +45,22 @@ class ProxyURLProtocol: URLProtocol, URLSessionDataDelegate, URLSessionTaskDeleg
     }
     
     override func stopLoading() {
+        print("Stop loading...")
+        
         self.dataTask?.cancel()
         self.dataTask = nil
     }
     
     // MARK: - URLSessionDataDelegate
     func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
+        print("Did receive data!")
+        
         client?.urlProtocol(self, didLoad: data)
         receivedData.append(data)
     }
     
     func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive response: URLResponse, completionHandler: @escaping (URLSession.ResponseDisposition) -> Void) {
+        print("Did receive response!")
         
         client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
         urlResponse = response
@@ -56,6 +70,8 @@ class ProxyURLProtocol: URLProtocol, URLSessionDataDelegate, URLSessionTaskDeleg
     
     // MARK: - URLSessionTaskDelegate
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
+        print("Session completed, with error?")
+        
         if let error = error {
             if let nsError = error as NSError?, nsError.domain == kCFErrorDomainCFNetwork as String {
                 print("Failed due to invalid proxy credentials.")
@@ -93,6 +109,7 @@ class ProxyURLProtocol: URLProtocol, URLSessionDataDelegate, URLSessionTaskDeleg
     }
     
     private func createSession(proxied: Bool) -> URLSession {
+        print("Creating session!")
         let config = URLSessionConfiguration.ephemeral
         
         if (proxied) {

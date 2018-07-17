@@ -15,8 +15,10 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        let req = URLRequest(url: URL(string: "http://api.ipify.org/")!)
-        self.webview.loadRequest(req)
+        let req = URLRequest(url: URL(string: "http://api.ipify.org/")!) as! NSMutableURLRequest
+        URLProtocol.setProperty(true, forKey: "customkey", in: req)
+        
+        self.webview.loadRequest(req as URLRequest)
     }
 
     override func didReceiveMemoryWarning() {
