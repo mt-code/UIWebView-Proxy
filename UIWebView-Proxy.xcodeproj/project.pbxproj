@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CF0A792820FE26E80063A79E /* Proxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF0A792720FE26E80063A79E /* Proxy.swift */; };
 		CF0EA7B320F8E95F00321619 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF0EA7B220F8E95F00321619 /* AppDelegate.swift */; };
 		CF0EA7B520F8E95F00321619 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF0EA7B420F8E95F00321619 /* ViewController.swift */; };
 		CF0EA7B820F8E95F00321619 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF0EA7B620F8E95F00321619 /* Main.storyboard */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CF0A792720FE26E80063A79E /* Proxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Proxy.swift; sourceTree = "<group>"; };
 		CF0EA7AF20F8E95F00321619 /* UIWebView-Proxy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "UIWebView-Proxy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF0EA7B220F8E95F00321619 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CF0EA7B420F8E95F00321619 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -63,6 +65,7 @@
 				CF0EA7BB20F8E97E00321619 /* LaunchScreen.storyboard */,
 				CF0EA7BE20F8E97E00321619 /* Info.plist */,
 				CF0EA7C820F8EE7D00321619 /* ProxyURLProtocol.swift */,
+				CF0A792720FE26E80063A79E /* Proxy.swift */,
 			);
 			path = "UIWebView-Proxy";
 			sourceTree = "<group>";
@@ -138,6 +141,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CF0A792820FE26E80063A79E /* Proxy.swift in Sources */,
 				CF0EA7C920F8EE7D00321619 /* ProxyURLProtocol.swift in Sources */,
 				CF0EA7B520F8E95F00321619 /* ViewController.swift in Sources */,
 				CF0EA7B320F8E95F00321619 /* AppDelegate.swift in Sources */,
