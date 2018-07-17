@@ -26,7 +26,29 @@ class ViewController: UIViewController {
         let req = URLRequest(url: URL(string: "https://whatsmyip.com/")!) as! NSMutableURLRequest
         URLProtocol.setProperty(proxies[randomIndex], forKey: "proxy", in: req)
         
-        self.webview.loadRequest(req as URLRequest)
+        self.webviewTesting()
+        return
+        
+        //self.webview.loadRequest(req as URLRequest)
+    }
+    
+    func webviewTesting() {
+        
+        UserDefaults.standard.register(defaults: ["UserAgent": "Custom-Agent-1"])
+        
+        
+        let webviewOne = UIWebView()
+        print(webviewOne.stringByEvaluatingJavaScript(from: "navigator.userAgent"))
+        
+        UserDefaults.standard.register(defaults: ["UserAgent": "Custom-Agent-2"])
+        
+        let webviewTwo = UIWebView()
+        print(webviewTwo.stringByEvaluatingJavaScript(from: "navigator.userAgent"))
+        
+        
+        print("Final test:")
+        print(webviewOne.stringByEvaluatingJavaScript(from: "navigator.userAgent"))
+        print(webviewTwo.stringByEvaluatingJavaScript(from: "navigator.userAgent"))
     }
 }
 
